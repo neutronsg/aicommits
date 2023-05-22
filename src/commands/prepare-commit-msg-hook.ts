@@ -5,7 +5,7 @@ import {
 import {
 	black, green, red, bgCyan,
 } from 'kolorist';
-import { getStagedDiff } from '../utils/git.js';
+import { getStagedDiff, getCurrentBranch } from '../utils/git.js';
 import { getConfig } from '../utils/config.js';
 import { generateCommitMessage } from '../utils/openai.js';
 import { KnownError, handleCliError } from '../utils/error.js';
@@ -28,6 +28,8 @@ export default () => (async () => {
 		return;
 	}
 
+	const current_branch = await getCurrentBranch();
+
 	intro(bgCyan(black(' aicommits ')));
 
 	const { env } = process;
@@ -43,6 +45,7 @@ export default () => (async () => {
 			config.OPENAI_KEY,
 			config.model,
 			config.locale,
+			current_branch,
 			staged!.diff,
 			config.generate,
 			config['max-length'],

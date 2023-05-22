@@ -126,6 +126,7 @@ export const generateCommitMessage = async (
 	apiKey: string,
 	model: TiktokenModel,
 	locale: string,
+	current_branch: string,
 	diff: string,
 	completions: number,
 	maxLength: number,
@@ -141,7 +142,7 @@ export const generateCommitMessage = async (
 				messages: [
 					{
 						role: 'system',
-						content: generatePrompt(locale, maxLength, type),
+						content: generatePrompt(locale, maxLength, type, current_branch),
 					},
 					{
 						role: 'user',

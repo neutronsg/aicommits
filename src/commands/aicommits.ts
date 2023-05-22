@@ -9,6 +9,7 @@ import {
 	assertGitRepo,
 	getStagedDiff,
 	getDetectedMessage,
+	getCurrentBranch
 } from '../utils/git.js';
 import { getConfig } from '../utils/config.js';
 import { generateCommitMessage } from '../utils/openai.js';
@@ -42,6 +43,8 @@ export default async (
 	detectingFiles.stop(`${getDetectedMessage(staged.files)}:\n${staged.files.map(file => `     ${file}`).join('\n')
 		}`);
 
+	const current_branch = await getCurrentBranch();
+
 	const { env } = process;
 	const config = await getConfig({
 		OPENAI_KEY: env.OPENAI_KEY || env.OPENAI_API_KEY,
@@ -58,6 +61,7 @@ export default async (
 			config.OPENAI_KEY,
 			config.model,
 			config.locale,
+			current_branch,
 			staged.diff,
 			config.generate,
 			config['max-length'],

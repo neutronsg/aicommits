@@ -60,4 +60,16 @@ export const getStagedDiff = async (excludeFiles?: string[]) => {
 	};
 };
 
+export const getCurrentBranch = async () => {
+	const { stdout: current_branch } = await execa(
+		'git',
+		[
+			'branch',
+			'--show-current'
+		],
+	);
+
+	return current_branch;
+};
+
 export const getDetectedMessage = (files: string[]) => `Detected ${files.length.toLocaleString()} staged file${files.length > 1 ? 's' : ''}`;
